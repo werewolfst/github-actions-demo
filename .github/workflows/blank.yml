@@ -1,17 +1,22 @@
-name: CI
+name: Github actions build and deploy Demo
 
-on: [push]
+on:
+  push:
+    branches:
+      - master
 
 jobs:
-  build:
-
+  build-and-deploy:
     runs-on: ubuntu-latest
     
     steps:
     - uses: actions/checkout@v1
-    - name: Run a one-line script
-      run: echo Hello, world!
-    - name: Run a multi-line script
-      run: |
-        echo Add other actions to build,
-        echo test, and deploy your project.
+
+    - name: Build & Deploy to GitHub Pages
+      uses: BryanSchuetz/jekyll-deploy-gh-pages@1.0
+      env:
+        ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+        BRANCH: gh-pages
+        FOLDER: build
+        BUILD_SCRIPT: npm install && npm run build
+
